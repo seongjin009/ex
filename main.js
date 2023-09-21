@@ -20,6 +20,19 @@ const imgs = createImgs(section, 200);
 
 const loadingNum = document.querySelector('aside p span');
 
+const aside = document.querySelector('aside');
+
+window.addEventListener('mousemove', (e) => {
+	const percent = getPercent(e, num);
+	activation(imgs, percent);
+});
+
+function getPercent(e, num) {
+	const curpos = e.pageX;
+	const wid = window.innerWidth;
+	return parseInt((curpos / wid) * num);
+}
+
 function createImgs(target, num) {
 	for (let i = 0; i < num; i++) {
 		const img = document.createElement('img');
@@ -31,12 +44,16 @@ function createImgs(target, num) {
 	const imgs = target.querySelectorAll('img');
 	let count = 0;
 	imgs.forEach((img) => {
+		//해당 돔에 수반되는 소스이미지가 로딩완료시 실행되는 이벤트
 		img.onload = () => {
 			count++;
-			loadingNum.innerText = count;
+			const percent = parseInt((count / num) * 100);
+			loadingNum.innerText = percent;
 			console.log('현재 로딩된 소스이미지', count);
 			if (count === num) {
-				console.log('모든ㄷ 소스이미지 로딩 완료');
+				//동적으로 만들어진 img요소의 소스이미지가 렌더링완료된 시점
+				console.log('모든 소스이미지 로딩 완료');
+				aside.remove();
 			}
 		};
 	});
@@ -45,21 +62,9 @@ function createImgs(target, num) {
 
 //activation 함수 추가 : 인수로 유사배열, 활성화 순번받음
 //순번에 대한 요소만 보임처리
-
-window.addEventListener('mousemove', (e) => {
-	const percent = getPercent(e, num);
-	activation(imgs, percent);
-});
-
 //이벤트정보 객체와 전체 갯수를 받아서
 //해당 숫자에 대한 백분율 반환함수
-function getPercent(e, num) {
-	const curpos = e.pageX;
-	const wid = window.innerWidth;
-	return parseInt((curpos / wid) * num);
-}
 
-//
 function activation(arr, index) {
 	arr.forEach((el) => (el.style.display = 'none'));
 	arr[index].style.display = 'block';

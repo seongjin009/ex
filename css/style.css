@@ -35,7 +35,8 @@ section img {
   top: 0;
   left: 0;
 }
-section aside {
+
+aside {
   position: absolute;
   top: 0;
   left: 0;
