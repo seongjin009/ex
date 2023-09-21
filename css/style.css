@@ -48,6 +48,11 @@ aside {
   align-items: center;
   font-size: 100px;
   color: #fff;
+  opacity: 1;
+  transition: opacity 1.5s;
+}
+aside .off {
+  opacity: 0;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -22,6 +22,8 @@ const loadingNum = document.querySelector('aside p span');
 
 const aside = document.querySelector('aside');
 
+const delay = convertSpeed(aside);
+
 window.addEventListener('mousemove', (e) => {
 	const percent = getPercent(e, num);
 	activation(imgs, percent);
@@ -44,6 +46,10 @@ function createImgs(target, num) {
 	const imgs = target.querySelectorAll('img');
 	let count = 0;
 	imgs.forEach((img) => {
+		img.onerrer = () => {
+			img.setAttributeNode('src', 'img/thumb1.jpg');
+		};
+
 		//해당 돔에 수반되는 소스이미지가 로딩완료시 실행되는 이벤트
 		img.onload = () => {
 			count++;
@@ -53,11 +59,19 @@ function createImgs(target, num) {
 			if (count === num) {
 				//동적으로 만들어진 img요소의 소스이미지가 렌더링완료된 시점
 				console.log('모든 소스이미지 로딩 완료');
-				aside.remove();
+				aside.classList.add('off');
+				setTimeout(() => {
+					aside.remove();
+				}, delay);
 			}
 		};
 	});
 	return imgs;
+}
+
+function convertSpeed(el) {
+	const result = getComputedStyle(el).transitionDuration;
+	return parseFloat(result) * 1000;
 }
 
 //activation 함수 추가 : 인수로 유사배열, 활성화 순번받음
