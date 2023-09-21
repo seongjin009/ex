@@ -14,21 +14,39 @@
 //현재수치값/전체수치값 * 200 (이백분율)
 const section = document.querySelector('section');
 
-createImgs(200);
+const num = 200;
 
-function createImgs(num) {
+const imgs = createImgs(section, 200);
+
+function createImgs(target, num) {
 	for (let i = 0; i <= num; i++) {
 		const img = document.createElement('img');
 		const src = document.createAttribute('src');
 		src.value = `img/pic${i}.jpg`;
 		img.setAttributeNode(src);
-		section.append(img);
+		target.append(img);
 	}
+	return target.querySelectorAll('img');
 }
 
+//activation 함수 추가 : 인수로 유사배열, 활성화 순번받음
+//순번에 대한 요소만 보임처리
+
 window.addEventListener('mousemove', (e) => {
+	const percent = getPercent(e, num);
+	activation(imgs, percent);
+});
+
+//이벤트정보 객체와 전체 갯수를 받아서
+//해당 숫자에 대한 백분율 반환함수
+function getPercent(e, num) {
 	const curpos = e.pageX;
 	const wid = window.innerWidth;
-	const percent = parseInt((curpos / wid) * 200);
-	console.log(percent);
-});
+	return parseInt((curpos / wid) * num);
+}
+
+//
+function activation(arr, index) {
+	arr.forEach((el) => (el.style.display = 'none'));
+	arr[index].style.display = 'block';
+}
