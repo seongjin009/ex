@@ -18,15 +18,29 @@ const num = 200;
 
 const imgs = createImgs(section, 200);
 
+const loadingNum = document.querySelector('aside p span');
+
 function createImgs(target, num) {
-	for (let i = 0; i <= num; i++) {
+	for (let i = 0; i < num; i++) {
 		const img = document.createElement('img');
 		const src = document.createAttribute('src');
 		src.value = `img/pic${i}.jpg`;
 		img.setAttributeNode(src);
 		target.append(img);
 	}
-	return target.querySelectorAll('img');
+	const imgs = target.querySelectorAll('img');
+	let count = 0;
+	imgs.forEach((img) => {
+		img.onload = () => {
+			count++;
+			loadingNum.innerText = count;
+			console.log('현재 로딩된 소스이미지', count);
+			if (count === num) {
+				console.log('모든ㄷ 소스이미지 로딩 완료');
+			}
+		};
+	});
+	return imgs;
 }
 
 //activation 함수 추가 : 인수로 유사배열, 활성화 순번받음
